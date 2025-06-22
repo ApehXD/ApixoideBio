@@ -4,46 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apixoide | Bio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        /* Переменные */
         :root {
-            --green: #2ecc71;
+            --primary: #f1c40f;
+            --secondary: #e67e22;
             --dark: #2c3e50;
             --light: #ecf0f1;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --primary-rgb: 241, 196, 15;
         }
 
+        /* Сброс стилей */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
 
+        /* Стили тела */
         body {
-            background: var(--dark);
+            background: linear-gradient(135deg, var(--dark), #34495e, var(--secondary));
             color: var(--light);
             line-height: 1.6;
+            animation: fadeIn 1s ease-in;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
+        /* Частицы */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Анимация затухания */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Контейнер */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Заголовок */
         header {
             text-align: center;
             padding: 80px 0 40px;
-            position: relative;
+            background: rgba(var(--primary-rgb), 0.1);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
             margin-bottom: 40px;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--primary) 10%, transparent 70%);
+            opacity: 0.2;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.2; }
+            50% { transform: translateX(-50%) scale(1.2); opacity: 0.4; }
+            100% { transform: translateX(-50%) scale(1); opacity: 0.2; }
         }
 
         header h1 {
             font-size: 3.5rem;
-            color: var(--green);
+            color: var(--primary);
             text-transform: uppercase;
             position: relative;
             display: inline-block;
-            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transition: color 0.5s ease;
         }
 
         header h1::before,
@@ -52,8 +108,9 @@
             position: absolute;
             width: 30px;
             height: 30px;
-            border: 3px solid var(--green);
+            border: 3px solid var(--primary);
             top: -10px;
+            transition: border-color 0.5s ease;
         }
 
         header h1::before {
@@ -68,6 +125,64 @@
             border-bottom: none;
         }
 
+        /* Видео в заголовке */
+        .header-video {
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            height: 0;
+            padding-bottom: 56.25%; /* Соотношение 16:9 */
+            transition: padding-bottom 0.5s ease;
+        }
+
+        .header-video video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .header-video video.fade-out {
+            opacity: 0;
+        }
+
+        /* Кнопка ноты */
+        .note-button {
+            display: block;
+            margin: 10px auto;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .note-button:hover {
+            color: var(--secondary);
+        }
+
+        /* Текст темы */
+        .theme-text {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .theme-text.visible {
+            opacity: 1;
+        }
+
+        /* Сетка информации */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -76,10 +191,11 @@
         }
 
         .info-item {
-            background: rgba(46, 204, 113, 0.1);
+            background: rgba(var(--primary-rgb), 0.1);
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
             position: relative;
             overflow: hidden;
         }
@@ -87,36 +203,72 @@
         .info-item::after {
             content: '';
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background: var(--green);
-            opacity: 0.1;
             top: -50px;
             right: -50px;
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            opacity: 0.1;
             transform: rotate(45deg);
+            transition: opacity 0.3s ease;
         }
 
+        .info-item:hover::after {
+            opacity: 0.3;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Расширяемые секции */
         .expandable {
             margin: 20px 0;
-            border: 2px solid var(--green);
+            border: 2px solid var(--primary);
             border-radius: 10px;
+            box-shadow: var(--shadow);
             overflow: hidden;
+            position: relative;
+            transition: border-color 0.5s ease;
+        }
+
+        .expandable::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(var(--primary-rgb), 0.1), transparent);
+            pointer-events: none;
         }
 
         .expandable-header {
             padding: 15px;
-            background: rgba(46, 204, 113, 0.2);
+            background: var(--primary);
+            color: var(--dark);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .expandable-header:hover {
+            background: var(--secondary);
         }
 
         .expandable-content {
             padding: 0 15px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            background: rgba(var(--primary-rgb), 0.05);
+            position: relative;
+            z-index: 1;
         }
 
         .expandable-content.active {
@@ -125,10 +277,13 @@
             overflow-y: auto;
         }
 
+        /* Видео секция */
         .video-section {
             margin: 40px 0;
             border-radius: 15px;
             overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
         }
 
         .video-container {
@@ -146,66 +301,40 @@
             object-fit: cover;
         }
 
-        .music-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(46, 204, 113, 0.3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            z-index: 1000;
-        }
-
-        .music-toggle:hover {
-            background: var(--green);
-        }
-
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 17px solid var(--light);
-            transform: rotate(90deg);
-        }
-
-        .music-info {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: rgba(46, 204, 113, 0.9);
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: var(--light);
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: 0.3s ease;
-            pointer-events: none;
-        }
-
+        /* Ссылки */
         a {
-            color: var(--green);
+            color: var(--primary);
             text-decoration: none;
-            border-bottom: 1px dotted var(--green);
+            border-bottom: 1px dotted var(--primary);
+            transition: border-bottom 0.3s ease, color 0.5s ease;
         }
 
         a:hover {
             border-bottom-style: solid;
         }
 
+        /* Предупреждения */
         .warning {
             color: #e74c3c;
             font-weight: bold;
             margin: 15px 0;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 5px;
+            position: relative;
         }
 
+        .warning::before {
+            content: '!';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e74c3c;
+            font-size: 1.5rem;
+        }
+
+        /* Списки */
         ul {
             margin: 15px 0;
             padding-left: 30px;
@@ -213,44 +342,116 @@
 
         ul li {
             margin: 8px 0;
+            position: relative;
         }
 
+        ul li::before {
+            content: '•';
+            color: var(--primary);
+            position: absolute;
+            left: -20px;
+        }
+
+        /* Декоративная линия */
+        .decorative-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            margin: 40px 0;
+            transition: background 0.5s ease;
+        }
+
+        /* Анимация текста */
+        .animated-text {
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 5px var(--primary); }
+            to { text-shadow: 0 0 15px var(--primary); }
+        }
+
+        /* Выбор темы */
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .theme-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 0 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-circle::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-circle:hover::before {
+            opacity: 1;
+        }
+
+        .theme-circle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .theme-circle.selected {
+            box-shadow: 0 0 0 4px #fff;
+        }
+
+        .yellow { background-color: #f1c40f; }
+        .green { background-color: #2ecc71; }
+        .purple { background-color: #9b59b6; }
+        .blue { background-color: #3498db; }
+        .red { background-color: #e74c3c; }
+
+        /* Медиа-запросы */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-                margin-top: 40px;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .expandable-content.active {
-                max-height: 70vh;
-            }
+            header h1 { font-size: 2.5rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .expandable-content.active { max-height: 70vh; }
+            .theme-circle { width: 30px; height: 30px; margin: 0 8px; }
         }
 
         @media (max-width: 480px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            header h1::before,
-            header h1::after {
+            header h1 { font-size: 2rem; }
+            header h1::before, header h1::after {
                 width: 20px;
                 height: 20px;
             }
+            .theme-circle { width: 25px; height: 25px; margin: 0 6px; }
         }
     </style>
 </head>
 <body>
-    <div class="music-toggle" onclick="toggleMusic()">
-        <div class="triangle"></div>
-    </div>
-    <div class="music-info" id="musicInfo">Jack Stauber - Oh, Klahoma (daycore) (не работает)</div>
-    <audio id="player" src="https://audio.com/apiehoid/audio/oh-klahoma"></audio>
+    <div id="particles-js"></div>
 
     <div class="container">
         <header>
-            <h1>Apixoide</h1>
+            <h1 class="animated-text">Apixoide</h1>
             <h2><span style="text-decoration: underline">Bio</span></h2>
+            <div class="header-video" id="header-video-container">
+                <video controls loading="lazy" id="theme-video">
+                    <source src="https://files.catbox.moe/oxe0qr.mp4" type="video/mp4">
+                </video>
+            </div>
+            <button class="note-button" onclick="toggleThemeText()">🎵</button>
+            <div class="theme-text" id="theme-text"></div>
             <hr>
         </header>
 
@@ -277,6 +478,8 @@
             </div>
         </div>
 
+        <div class="decorative-line"></div>
+
         <div class="expandable">
             <div class="expandable-header" onclick="toggleContent(this)">
                 <h2>Before writing</h2>
@@ -289,33 +492,13 @@
                 <ul>
                     <li>Могу ли я задать вопрос?</li>
                     <li>Есть ли кто-нибудь с опытом работы с N?</li>
-                    <li>Кто-нибудь здесь проходил курс от Google на курсера?</li>
+                    <li>Кто-нибудь здесь проходил курс от Google на Coursera?</li>
                     <li>У меня есть вопрос по анализу текста...</li>
                 </ul>
-
-                <h4>«Понятно, но что не так с такими вопросами? Почему бы мне их не задать?»</h4>
-                <p class="warning">Они отнимают время! Ваше и других людей, которые пытаются помочь.</p>
-
-                <p>Вы, вероятно, хотите быть вежливым, не переходя сразу к сути проблемы — так принято в личном общении. 
-                Но в чате все иначе: люди печатают медленнее, чем говорят. Вместо того чтобы проявлять вежливость, 
-                вы заставляете собеседника ждать, пока формулируете свой вопрос. Это снижает продуктивность.</p>
-
-                <p>Та же проблема касается сообщений вроде:</p>
-                <ul>
-                    <li>Привет</li>
-                    <li>Привет, вы здесь?</li>
-                    <li>У вас есть минутка?</li>
-                    <li>Пинг, любой</li>
-                </ul>
-
+                <h4>«Понятно, но что не так с такими вопросами?»</h4>
+                <p class="warning">Они отнимают время! Ваше и других людей.</p>
+                <p>Вы хотите быть вежливым, но в чате это снижает продуктивность.</p>
                 <p class="warning">Просто сразу задайте свой вопрос!</p>
-
-                <p>Это также открывает возможность асинхронного общения: если собеседник недоступен и вы ушли до его возвращения, 
-                он все равно сможет ответить на ваш вопрос, а не смотреть на ваше «Привет» и гадать, что вы хотели сказать.</p>
-
-                <div class="warning">ВАЖНО!</div>
-                <p class="warning">СРАЗУ УКАЗЫВАЙТЕ ССЫЛКИ НА НЕОБХОДИМЫЕ МАТЕРИАЛЫ!<br>
-                В противном случае ваш вопрос может быть проигнорирован или привести к добавлению в чс.</p>
             </div>
         </div>
 
@@ -327,16 +510,47 @@
             <div class="expandable-content">
                 <div class="video-section">
                     <div class="video-container">
-                        <video controls>
+                        <video controls loading="lazy">
                             <source src="https://files.catbox.moe/aw567n.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="theme-selector">
+            <div class="theme-circle yellow selected" onclick="changeTheme('yellow')"></div>
+            <div class="theme-circle green" onclick="changeTheme('green')"></div>
+            <div class="theme-circle purple" onclick="changeTheme('purple')"></div>
+            <div class="theme-circle blue" onclick="changeTheme('blue')"></div>
+            <div class="theme-circle red" onclick="changeTheme('red')"></div>
+        </div>
+
+        <div class="decorative-line"></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        let particleConfig = {
+            particles: {
+                number: { value: window.innerWidth < 768 ? 40 : 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#f1c40f' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: false },
+                move: { enable: true, speed: 1, direction: 'none', random: true, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: false }, onclick: { enable: false }, resize: true },
+            },
+            retina_detect: true
+        };
+        particlesJS('particles-js', particleConfig);
+
+        let currentTheme = 'yellow'; // Текущая тема по умолчанию
+
         function toggleContent(header) {
             const content = header.nextElementSibling;
             content.classList.toggle('active');
@@ -344,16 +558,117 @@
                 content.classList.contains('active') ? '▲' : '▼';
         }
 
-        const player = document.getElementById('player');
-        const musicInfo = document.getElementById('musicInfo');
-        let isPlaying = false;
+        const themeVideos = {
+            yellow: 'https://files.catbox.moe/oxe0qr.mp4',
+            green: 'https://files.catbox.moe/kbc7qa.mp4',
+            purple: 'https://files.catbox.moe/5lhja3.mp4',
+            blue: 'https://files.catbox.moe/4kaoo2.mp4',
+            red: 'https://files.catbox.moe/rch1nv.mp4'
+        };
 
-        function toggleMusic() {
-            isPlaying = !isPlaying;
-            isPlaying ? player.play() : player.pause();
-            musicInfo.style.maxHeight = isPlaying ? '50px' : '0';
-            musicInfo.style.opacity = isPlaying ? '1' : '0';
+        const themeNames = {
+            yellow: 'Желтый',
+            green: 'Зеленый',
+            purple: 'Фиолетовый',
+            blue: 'Синий',
+            red: 'Красный'
+        };
+
+        // Функция для адаптации контейнера под разрешение видео
+        function setVideoAspectRatio() {
+            const video = document.getElementById('theme-video');
+            const container = document.getElementById('header-video-container');
+            video.addEventListener('loadedmetadata', function() {
+                const aspectRatio = video.videoHeight / video.videoWidth;
+                container.style.paddingBottom = `${aspectRatio * 100}%`;
+            });
         }
+
+        function changeTheme(theme) {
+            currentTheme = theme; // Обновляем текущую тему
+            let primary, secondary, primaryRGB;
+            switch (theme) {
+                case 'yellow':
+                    primary = '#f1c40f';
+                    secondary = '#e67e22';
+                    primaryRGB = '241, 196, 15';
+                    break;
+                case 'green':
+                    primary = '#2ecc71';
+                    secondary = '#27ae60';
+                    primaryRGB = '46, 204, 113';
+                    break;
+                case 'purple':
+                    primary = '#9b59b6';
+                    secondary = '#8e44ad';
+                    primaryRGB = '155, 89, 182';
+                    break;
+                case 'blue':
+                    primary = '#3498db';
+                    secondary = '#2980b9';
+                    primaryRGB = '52, 152, 219';
+                    break;
+                case 'red':
+                    primary = '#e74c3c';
+                    secondary = '#c0392b';
+                    primaryRGB = '231, 76, 60';
+                    break;
+            }
+
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--secondary', secondary);
+            document.documentElement.style.setProperty('--primary-rgb', primaryRGB);
+
+            if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+                window.pJSDom[0].pJS.particles.color.value = primary;
+                window.pJSDom[0].pJS.particles.array.forEach(particle => {
+                    particle.color.value = primary;
+                });
+                window.pJSDom[0].pJS.fn.particlesRefresh();
+            }
+
+            document.querySelectorAll('.theme-circle').forEach(circle => {
+                circle.classList.remove('selected');
+            });
+            document.querySelector(`.theme-circle.${theme}`).classList.add('selected');
+
+            const video = document.getElementById('theme-video');
+            const source = video.querySelector('source');
+            video.classList.add('fade-out');
+            setTimeout(() => {
+                source.src = themeVideos[theme];
+                video.load();
+                video.classList.remove('fade-out');
+                setVideoAspectRatio();
+            }, 500);
+
+            // Сбрасываем текст темы при смене темы
+            const themeText = document.getElementById('theme-text');
+            themeText.classList.remove('visible');
+        }
+
+        // Функция для показа/скрытия текста темы
+        function toggleThemeText() {
+            const themeText = document.getElementById('theme-text');
+            if (themeText.classList.contains('visible')) {
+                themeText.classList.remove('visible');
+            } else {
+                themeText.textContent = themeNames[currentTheme];
+                themeText.classList.add('visible');
+            }
+        }
+
+        // Инициализация соотношения для начального видео
+        setVideoAspectRatio();
+
+        document.addEventListener('play', function(e) {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                if (video !== e.target) {
+                    video.pause();
+                }
+            });
+        }, true);
     </script>
 </body>
-  </html>
+</html>
